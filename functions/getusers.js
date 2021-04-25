@@ -10,12 +10,28 @@ exports.handler = function(event, context, callback){
     const URL = `${API_URL}?client_id=${API_CLIENT_ID}&client_secret=${API_CLIENT_SECRET}`;
 
     //Send user response
+    const send = (body) =>{
+        callback(null, {
+            statusCode : 200,
+            body : JSON.stringify(body) 
+        })
+    }
 
     //perform an api call
+    const getUsers = () => {
+        axios.get(URL)
+            .then(res => send(res.data))
+            .catch(err => send(err))
+    }
 
-    const {name} = JSON.parse(event.body); 
-    callback(null, {
-        statusCode : 200,
-        body : JSON.stringify({ msg :"Hello "+ name }) 
-    })
+    // Make sure call is a GET
+    if(event.httpMethod == "GET"){
+        getUsers();
+    }
+
+    // const {name} = JSON.parse(event.body); 
+    // callback(null, {
+    //     statusCode : 200,
+    //     body : JSON.stringify({ msg :"Hello "+ name }) 
+    // })
 }
