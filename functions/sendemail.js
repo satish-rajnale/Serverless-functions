@@ -16,6 +16,7 @@ function sendEmail(client, message, senderEmail, senderName){
         client.send(data)
             .then(([response, body]) => {
                 fulfill(response)
+                console.log(response)
             })
             .catch(err => reject(err))
     })
@@ -40,11 +41,7 @@ exports.handler = function(event, context, callback){
         SENDGRID_SENDER_NAME
     ).then(response => callback(null, {
         statusCode : response.statusCode,
-        body : JSON.stringify(response.body),
-        headers: {
-            'Access-Control-Allow-Origin' : '*',
-            'Access-Control-Allow-Headers' : 'Origin, X-Requested-With, Content-Type, Accept',
-        }
+  
     }))
     .catch(err => callback(err, null))
 
